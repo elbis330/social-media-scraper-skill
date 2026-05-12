@@ -1,40 +1,40 @@
 # 🎬 Social Media Scraper Skill for Claude Code
 
-> **Tek link at, Claude her şeyi getirsin.** Instagram reel, TikTok video, Twitter thread, YouTube video — fark etmez. Metin, yorumlar, beğeniler, transkripsiyon **ve** ekranda ne olduğunu Gemini Vision ile analiz ederek tek bir akıcı özet olarak sunar.
+> **Drop a single link, and Claude fetches everything.** Instagram reel, TikTok video, Twitter thread, YouTube video — doesn't matter. Text, comments, likes, transcription **and** analysis of what's on screen via Gemini Vision, all delivered as a single fluent summary.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-7C3AED)](https://claude.com/claude-code)
-[![Platforms](https://img.shields.io/badge/Platforms-Instagram%20%7C%20TikTok%20%7C%20X%20%7C%20YouTube-blue)](#-desteklenen-platformlar)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-katkıda-bulunma)
+[![Platforms](https://img.shields.io/badge/Platforms-Instagram%20%7C%20TikTok%20%7C%20X%20%7C%20YouTube-blue)](#-supported-platforms)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-contributing)
 
 ---
 
-## 🤔 Bu Skill Ne İşe Yarıyor?
+## 🤔 What Does This Skill Do?
 
-Bir sosyal medya linki gördün ama açmaya üşeniyorsun. Ya da videoyu izlemeden ne anlattığını öğrenmek istiyorsun. Bu skill tam olarak bunu çözüyor:
+You see a social media link but you're too lazy to open it. Or you want to know what a video is about without watching it. This skill solves exactly that:
 
 ```
-Sen: https://www.instagram.com/reel/Cxyz.../
+You:    https://www.instagram.com/reel/Cxyz.../
 
-Claude: Bu reel'de @kullaniciadi yeni bir kahve makinesi tanıtıyor.
-        12,432 beğeni, 248 yorum almış.
-        Videoda anlatım: "Bu makineyle 3 dakikada espresso..."
-        Ekranda görünenler: La Marzocco Linea Mini cihazı,
-        bir kafede çekilmiş, fiyat etiketi 24.500 TL...
+Claude: In this reel, @username introduces a new coffee machine.
+        It got 12,432 likes and 248 comments.
+        Narration in the video: "With this machine, in 3 minutes, espresso..."
+        On screen: La Marzocco Linea Mini device,
+        shot in a cafe, price tag 24,500 TL...
 ```
 
-**Tek linkten 4 katman bilgi:**
-1. 📊 Metadata (kim, ne zaman, kaç beğeni)
-2. 💬 Yorumlar (en dikkat çekici olanlar)
-3. 🎙️ Konuşma transkripsiyonu (faster-whisper)
-4. 👁️ Ekran/görsel analizi (Gemini Vision)
+**4 layers of info from a single link:**
+1. 📊 Metadata (who, when, how many likes)
+2. 💬 Comments (the most notable ones)
+3. 🎙️ Speech transcription (faster-whisper)
+4. 👁️ Screen/visual analysis (Gemini Vision)
 
 ---
 
-## 🌐 Desteklenen Platformlar
+## 🌐 Supported Platforms
 
-| Platform | Metadata | Yorumlar | Video İndirme | Transkripsiyon | Görsel Analiz |
-|----------|----------|----------|---------------|----------------|---------------|
+| Platform | Metadata | Comments | Video Download | Transcription | Visual Analysis |
+|----------|----------|----------|----------------|---------------|-----------------|
 | 📸 **Instagram** (post, reel, story) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 🎵 **TikTok** | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 🐦 **Twitter / X** | ✅ | ✅ (thread) | ✅ | ✅ | ✅ |
@@ -42,39 +42,39 @@ Claude: Bu reel'de @kullaniciadi yeni bir kahve makinesi tanıtıyor.
 
 ---
 
-## ✨ Özellikler
+## ✨ Features
 
-- 🔗 **Otomatik platform algılama** — Link at, gerisini düşünme
-- 📝 **Tam metadata** — Beğeni, yorum, paylaşım, tarih, hashtag
-- 💬 **Yorumların özeti** — En dikkat çekici yorumlar otomatik seçilir
-- 🎙️ **Whisper transkripsiyonu** — Video/ses içerik zaman damgalı metne döner
-- 👁️ **Gemini Vision analizi** — Ekrandaki yazılar, ürünler, arayüzler, sahneler okunur
-- 🧹 **Otomatik temizlik** — Geçici video/ses dosyaları analiz sonrası silinir
-- 🔄 **Çoklu fallback** — Bir araç çalışmazsa diğerine geçer (bird → Jina → tarayıcı)
-- 🇹🇷 **Türkçe-friendly** — Türkçe içerikleri doğru anlar ve Türkçe yanıt verir
+- 🔗 **Automatic platform detection** — Drop a link, don't think about the rest
+- 📝 **Full metadata** — Likes, comments, shares, date, hashtags
+- 💬 **Comment summary** — The most notable comments are auto-selected
+- 🎙️ **Whisper transcription** — Video/audio content turned into timestamped text
+- 👁️ **Gemini Vision analysis** — On-screen text, products, interfaces, scenes are read
+- 🧹 **Automatic cleanup** — Temporary video/audio files are removed after analysis
+- 🔄 **Multi-fallback** — If one tool fails, it switches to another (bird → Jina → browser)
+- 🌍 **Multilingual** — Whisper auto-detects 99 languages, content is understood correctly
 
 ---
 
-## 📦 Kurulum
+## 📦 Installation
 
-İki kurulum yöntemi var. İlkini ne yaptığını anlamayan birine ver — bütün soruları Claude soruyor. İkincisi klasik terminal akışı.
+There are two installation methods. Give the first one to someone who doesn't know what they're doing — Claude asks all the questions. The second is the classic terminal flow.
 
-### Yöntem 1 — Claude Code ile (önerilen)
+### Method 1 — With Claude Code (recommended)
 
-Claude Code'da skill kuruluysa, sadece şunu yaz:
+If the skill is installed in Claude Code, just type:
 
 ```
-social-media-scraper skill'ini kur
+install the social-media-scraper skill
 ```
 
-Claude sırasıyla şunları soracak:
-1. Hangi platformlar? (Instagram, TikTok, Twitter/X, YouTube — hepsi veya seçim)
-2. Gemini ile görsel video analizi olsun mu? (evetse API key'i ister)
-3. Transkripsiyon dili? (otomatik / tr / en / diğer)
+Claude will ask the following in order:
+1. Which platforms? (Instagram, TikTok, Twitter/X, YouTube — all or a selection)
+2. Should Gemini visual video analysis be enabled? (if yes, asks for the API key)
+3. Transcription language? (auto / tr / en / other)
 
-Cevaplara göre **sadece gerekli araçları** kurar ve yapılandırmayı `~/.social-media-scraper.env` dosyasına yazar.
+Based on the answers, it installs **only the required tools** and writes the configuration to `~/.social-media-scraper.env`.
 
-### Yöntem 2 — Terminal'den interaktif kurulum
+### Method 2 — Interactive setup from terminal
 
 ```bash
 git clone https://github.com/elbis330/social-media-scraper-skill.git
@@ -83,11 +83,11 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-`setup.sh` aynı soruları renkli, adım adım sorar ve seçimlere göre kurar. Yapılandırma `~/.social-media-scraper.env` içine kaydedilir (chmod 600 ile korunur).
+`setup.sh` asks the same questions in color, step by step, and installs based on your selections. The configuration is saved to `~/.social-media-scraper.env` (protected with chmod 600).
 
-### Yöntem 3 — Hızlı, sorusuz kurulum
+### Method 3 — Quick, no-questions install
 
-Bütün araçları sormadan kurmak istersen:
+If you want to install all tools without being asked:
 
 ```bash
 git clone https://github.com/elbis330/social-media-scraper-skill.git
@@ -96,204 +96,205 @@ chmod +x install.sh
 ./install.sh
 ```
 
-`install.sh` hiçbir şey sormaz, tüm platformlara ait tüm araçları kurar (yt-dlp, instaloader, faster-whisper, google-genai, bird, ffmpeg).
+`install.sh` asks nothing and installs all tools for all platforms (yt-dlp, instaloader, faster-whisper, google-genai, bird, ffmpeg).
 
-### Manuel Kurulum
+### Manual Installation
 
-#### 1. Skill'i Yerleştir
+#### 1. Place the Skill
 
 ```bash
 mkdir -p ~/.claude/skills/social-media-scraper
 cp SKILL.md ~/.claude/skills/social-media-scraper/SKILL.md
 ```
 
-#### 2. Bağımlılıkları Kur
+#### 2. Install Dependencies
 
 ```bash
-# Python paketleri
+# Python packages
 pip install yt-dlp instaloader faster-whisper google-genai --break-system-packages
 
-# Node paketi (Twitter/X için)
+# Node package (for Twitter/X)
 npm install -g @steipete/bird
 
-# ffmpeg (transkripsiyon için)
+# ffmpeg (for transcription)
 brew install ffmpeg          # macOS
 sudo apt install ffmpeg      # Linux (Debian/Ubuntu)
 ```
 
-#### 3. Gemini API Key Ayarla
+#### 3. Set the Gemini API Key
 
-[Google AI Studio](https://aistudio.google.com/apikey) üzerinden **ücretsiz** API key al, ardından:
+Get a **free** API key from [Google AI Studio](https://aistudio.google.com/apikey), then:
 
 ```bash
 echo 'export GEMINI_API_KEY="your_api_key_here"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-#### 4. Doğrula
+#### 4. Verify
 
-Claude Code'u yeniden başlat ve test et:
-
-```
-Bu reel'i analiz et: https://www.instagram.com/reel/EXAMPLE/
-```
-
----
-
-## 🚀 Kullanım Örnekleri
-
-### Instagram Reel'i Çek
+Restart Claude Code and test:
 
 ```
-Kullanıcı: Bu reel'de ne anlatıyor?
-           https://www.instagram.com/reel/Cxyz12345/
-
-Claude:    [otomatik olarak indirir, transkripsiyon yapar, görselini analiz eder]
-           Paylaşan: @kullaniciadi (45.2K takipçi)
-           Tarih: 8 Mart 2026, 14:32
-           Beğeni: 12,432  ·  Yorum: 248
-
-           Videoda kullanıcı yeni bir kahve makinesini tanıtıyor.
-           Ekranda La Marzocco Linea Mini cihazı görünüyor, bir
-           kafede çekilmiş. Anlatımında "3 dakikada profesyonel
-           espresso" vurgusu var. Yorumlarda çoğunluk fiyatın
-           pahalı olduğunu söylüyor.
-```
-
-### Twitter Thread Oku
-
-```
-Kullanıcı: Bu thread'i özetle:
-           https://x.com/example/status/1234567890
-
-Claude:    [bird CLI ile tüm thread'i çeker]
-           [özet sunar]
-```
-
-### TikTok Trend Analizi
-
-```
-Kullanıcı: Bu TikTok'ta neden bu kadar yorum var?
-           https://www.tiktok.com/@user/video/123
-
-Claude:    [video indirir, transkript + görsel analiz]
-           [en dikkat çekici yorumları gruplayıp sunar]
-```
-
-### YouTube Video Özeti
-
-```
-Kullanıcı: Bu video uzun, beni 20 saniyede özetle:
-           https://www.youtube.com/watch?v=abc123
-
-Claude:    [yt-dlp ile metadata + altyazı çeker, yoksa transkript yapar]
-           [özet sunar]
+Analyze this reel: https://www.instagram.com/reel/EXAMPLE/
 ```
 
 ---
 
-## 🛠️ Gereksinimler
+## 🚀 Usage Examples
 
-| Bağımlılık | Versiyon | Niye? |
-|------------|----------|-------|
+### Fetch an Instagram Reel
+
+```
+User:   What is this reel about?
+        https://www.instagram.com/reel/Cxyz12345/
+
+Claude: [automatically downloads, transcribes, analyzes visuals]
+        Posted by: @username (45.2K followers)
+        Date: March 8, 2026, 14:32
+        Likes: 12,432  ·  Comments: 248
+
+        In the video the user introduces a new coffee machine.
+        The La Marzocco Linea Mini device is shown on screen, filmed
+        in a cafe. The narration emphasizes "professional espresso
+        in 3 minutes". The majority of comments say the price is
+        too high.
+```
+
+### Read a Twitter Thread
+
+```
+User:   Summarize this thread:
+        https://x.com/example/status/1234567890
+
+Claude: [pulls the entire thread with bird CLI]
+        [presents a summary]
+```
+
+### TikTok Trend Analysis
+
+```
+User:   Why does this TikTok have so many comments?
+        https://www.tiktok.com/@user/video/123
+
+Claude: [downloads video, transcribes + visual analysis]
+        [groups and presents the most notable comments]
+```
+
+### YouTube Video Summary
+
+```
+User:   This video is long, summarize it for me in 20 seconds:
+        https://www.youtube.com/watch?v=abc123
+
+Claude: [pulls metadata + captions with yt-dlp, transcribes if absent]
+        [presents a summary]
+```
+
+---
+
+## 🛠️ Requirements
+
+| Dependency | Version | Why? |
+|------------|---------|------|
 | Python | 3.10+ | yt-dlp, instaloader, faster-whisper, google-genai |
 | Node.js | 18+ | bird CLI (Twitter/X) |
-| ffmpeg | herhangi | Video → ses dönüşümü |
-| Claude Code | en son | Skill çalıştırma |
-| **Gemini API Key** | — | Görsel analiz için ([ücretsiz](https://aistudio.google.com/apikey)) |
+| ffmpeg | any | Video → audio conversion |
+| Claude Code | latest | Running the skill |
+| **Gemini API Key** | — | For visual analysis ([free](https://aistudio.google.com/apikey)) |
 
-> **Not:** Tüm Python paketleri sistemsel olarak `--break-system-packages` ile kuruluyor. Virtualenv kullanmak istersen `install.sh` içindeki ilgili komutları düzenle.
+> **Note:** All Python packages are installed system-wide with `--break-system-packages`. If you want to use a virtualenv, edit the relevant commands inside `install.sh`.
 
 ---
 
-## 🔧 Mimari
+## 🔧 Architecture
 
 ```
-Sosyal medya linki
+Social media link
         │
         ▼
 ┌───────────────────┐
-│ Platform algıla   │ (regex: instagram.com / tiktok.com / x.com / youtube.com)
+│ Detect platform   │ (regex: instagram.com / tiktok.com / x.com / youtube.com)
 └────────┬──────────┘
          ▼
 ┌───────────────────┐
-│ Metadata + medya  │ (bird / instaloader / yt-dlp)
-│ indir             │
+│ Metadata + media  │ (bird / instaloader / yt-dlp)
+│ download          │
 └────────┬──────────┘
          ▼
 ┌───────────────────┐    ┌─────────────────────┐
-│ Ses çıkar (ffmpeg)│ ─→ │ faster-whisper      │ (zaman damgalı transkript)
-└────────┬──────────┘    └─────────────────────┘
-         ▼
-┌───────────────────┐
-│ Gemini Vision     │ (ekrandaki yazılar, ürünler, arayüzler)
+│ Extract audio     │ ─→ │ faster-whisper      │ (timestamped transcript)
+│ (ffmpeg)          │    └─────────────────────┘
 └────────┬──────────┘
          ▼
 ┌───────────────────┐
-│ Birleştir + sun   │ (transkript + görsel → tek akıcı özet)
+│ Gemini Vision     │ (on-screen text, products, interfaces)
+└────────┬──────────┘
+         ▼
+┌───────────────────┐
+│ Merge + present   │ (transcript + visual → one fluent summary)
 └───────────────────┘
 ```
 
 ---
 
-## ❓ SSS
+## ❓ FAQ
 
-**S: Bu skill ücretli mi?**
-C: Hayır. Gemini API key'i Google AI Studio üzerinden ücretsiz alınıyor (cömert kota var). Diğer her şey açık kaynak.
+**Q: Is this skill paid?**
+A: No. The Gemini API key is free via Google AI Studio (generous quota). Everything else is open source.
 
-**S: Login gerektiren özel paylaşımları çekebilir mi?**
-C: Hayır. Sadece public içerik. Instagram bazı durumlarda cookie ister, `--cookies-from-browser chrome` ile çözülür.
+**Q: Can it fetch private posts that require login?**
+A: No. Only public content. Instagram may ask for cookies in some cases, which can be solved with `--cookies-from-browser chrome`.
 
-**S: Transkripsiyon Türkçe destekliyor mu?**
-C: Evet. faster-whisper 99 dil destekliyor, dil otomatik algılanır.
+**Q: Does transcription support languages other than English?**
+A: Yes. faster-whisper supports 99 languages, and the language is auto-detected.
 
-**S: Gemini API key'im yok, yine de çalışır mı?**
-C: Evet ama görsel analiz yapamaz. Sadece transkripsiyon + metadata + yorumlar gelir.
+**Q: I don't have a Gemini API key, will it still work?**
+A: Yes, but it cannot do visual analysis. Only transcription + metadata + comments will be provided.
 
-**S: Windows desteği var mı?**
-C: Test edilmedi. Kurulum scripti macOS/Linux için. WSL altında çalışması beklenir.
+**Q: Is there Windows support?**
+A: Not tested. The install script is for macOS/Linux. It is expected to work under WSL.
 
 ---
 
-## 🤝 Katkıda Bulunma
+## 🤝 Contributing
 
-PR'lar memnuniyetle karşılanır. Eklenmek istenenler:
+PRs are welcome. Wanted additions:
 
-- [ ] Threads (Meta) desteği
-- [ ] Reddit post desteği
-- [ ] LinkedIn paylaşım desteği
-- [ ] Windows için install.ps1
+- [ ] Threads (Meta) support
+- [ ] Reddit post support
+- [ ] LinkedIn post support
+- [ ] install.ps1 for Windows
 - [ ] Docker image
-- [ ] Çoklu link batch işleme
+- [ ] Multi-link batch processing
 
-İşleyiş:
-1. Fork et
-2. Branch aç (`git checkout -b feature/threads-support`)
+Workflow:
+1. Fork
+2. Create a branch (`git checkout -b feature/threads-support`)
 3. Commit (`git commit -m 'feat: add Threads support'`)
 4. Push (`git push origin feature/threads-support`)
-5. PR aç
+5. Open a PR
 
 ---
 
-## 📜 Lisans
+## 📜 License
 
-MIT — bkz. [LICENSE](LICENSE)
+MIT — see [LICENSE](LICENSE)
 
 ---
 
-## 🙏 Teşekkürler
+## 🙏 Acknowledgments
 
-Bu skill şu projelerin sırtında yükseliyor:
+This skill stands on the shoulders of these projects:
 
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) — evrensel medya indirici
-- [instaloader](https://github.com/instaloader/instaloader) — Instagram çekme
-- [faster-whisper](https://github.com/SYSTRAN/faster-whisper) — hızlı yerel transkripsiyon
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) — universal media downloader
+- [instaloader](https://github.com/instaloader/instaloader) — Instagram scraping
+- [faster-whisper](https://github.com/SYSTRAN/faster-whisper) — fast local transcription
 - [bird](https://github.com/steipete/bird) — Twitter/X CLI
 - [google-genai](https://github.com/googleapis/python-genai) — Gemini Python SDK
 
 ---
 
 <p align="center">
-  <b>🌟 Beğendiysen yıldız bırakmayı unutma!</b><br>
+  <b>🌟 If you liked it, don't forget to leave a star!</b><br>
   <sub>Made with ☕ for the Claude Code community</sub>
 </p>
