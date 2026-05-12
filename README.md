@@ -12,9 +12,9 @@
 ## 🎥 Demo
 
 <div align="center">
-  <img src="assets/demo.gif" alt="Social Media Scraper Skill Demo" width="400">
-  <br>
-  <sub><a href="assets/demo.mp4">▶ Watch full quality MP4</a></sub>
+
+https://github.com/user-attachments/assets/82103420-9e30-4337-8ecf-4d88783b4bdd
+
 </div>
 
 ---
