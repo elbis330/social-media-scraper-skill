@@ -19,19 +19,17 @@ https://github.com/user-attachments/assets/82103420-9e30-4337-8ecf-4d88783b4bdd
 
 ---
 
-## 🤔 What Does This Skill Do?
+## 🤔 Why?
 
-You see a social media link but you're too lazy to open it. Or you want to know what a video is about without watching it. This skill solves exactly that:
+Social media posts contain valuable data locked behind platform walls. Whether you're a researcher tracking trends, a marketer analyzing competitor content, a developer building datasets, or a journalist verifying sources — you need structured access to this data.
 
-```
-You:    https://www.instagram.com/reel/Cxyz.../
+This skill turns any social media link into structured, actionable data:
 
-Claude: In this reel, @username introduces a new coffee machine.
-        It got 12,432 likes and 248 comments.
-        Narration in the video: "With this machine, in 3 minutes, espresso..."
-        On screen: La Marzocco Linea Mini device,
-        shot in a cafe, price tag 24,500 TL...
-```
+- **🔬 Research & Analysis** — Track conversations, extract engagement metrics, analyze sentiment across platforms. No manual copy-pasting.
+- **📡 Content Monitoring** — Monitor brand mentions, competitor activity, or industry trends. Get full post data including comments and replies.
+- **♿ Accessibility** — Video content is inaccessible to many. Auto-transcription + AI video analysis makes visual content searchable and readable.
+- **🧱 Development & Datasets** — Build training datasets, content pipelines, or analytics dashboards from real social media data.
+- **📰 Journalism & OSINT** — Verify sources, archive posts before deletion, extract metadata for fact-checking.
 
 **4 layers of info from a single link:**
 1. 📊 Metadata (who, when, how many likes)
