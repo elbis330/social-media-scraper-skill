@@ -259,8 +259,8 @@ A: Yes. faster-whisper supports 99 languages, and the language is auto-detected.
 **Q: I don't have a Gemini API key, will it still work?**
 A: Yes, but it cannot do visual analysis. Only transcription + metadata + comments will be provided.
 
-**Q: Is there Windows support?**
-A: Not tested. The install script is for macOS/Linux. It is expected to work under WSL.
+**Q: Does it work on Windows?**
+A: Yes. All dependencies (bird CLI, instaloader, yt-dlp, faster-whisper, google-genai) are cross-platform and work on Windows. Install ffmpeg via `choco install ffmpeg` or `winget install ffmpeg`. For bird CLI, install Node.js first, then `npm install -g @steipete/bird`. The `setup.sh` script supports macOS and Linux only — on Windows, install dependencies manually using the commands above, or run setup under WSL.
 
 ---
 
