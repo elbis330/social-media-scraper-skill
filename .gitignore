@@ -3,6 +3,10 @@
 .env.local
 .env.*.local
 
+# Skill yapılandırması (API key içerebilir)
+.social-media-scraper.env
+.social-media-scraper.env.bak.*
+
 # Python
 __pycache__/
 *.py[cod]

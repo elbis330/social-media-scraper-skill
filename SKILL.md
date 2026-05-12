@@ -8,6 +8,95 @@ description: |
 
 Sosyal medya paylaşımlarının tüm verilerini çeken, analiz eden ve video/ses içeriklerin transkripsiyonu + görsel analizini yapan skill.
 
+## İlk Kurulum
+
+Bu skill ilk kez çağrıldığında veya kullanıcı "kur", "ayarla", "setup", "yapılandır" derse, önce kurulum modunu başlat.
+
+### Kurulum Algılama
+
+Yapılandırma dosyası: `~/.social-media-scraper.env`. Dosya yoksa veya kullanıcı yeniden kurulum istiyorsa, aşağıdaki interaktif soruları sor.
+
+```bash
+test -f ~/.social-media-scraper.env || echo "İlk kurulum gerekli"
+```
+
+### Kurulum Soruları
+
+Soruları **tek tek** sor, kullanıcı her birini cevaplasın. Cevaplara göre `~/.social-media-scraper.env` dosyasını oluştur ve **sadece** seçilen platformlara ait araçları kur.
+
+**Soru 1 — Platformlar**
+
+> "Hangi platformları kullanmak istiyorsun? Instagram, TikTok, Twitter/X, YouTube — hepsini seçebilirsin ya da sadece istediklerini. (varsayılan: hepsi)"
+
+Cevabı virgülle ayrılmış küçük harf liste olarak normalize et: `instagram,tiktok,twitter,youtube`.
+
+**Soru 2 — Gemini görsel analizi**
+
+> "Gemini ile görsel video analizi aktif olsun mu? Bu, ekrandaki yazıları, ürünleri ve sahneleri okur — Whisper'ın çeviremeyeceği görsel bağlamı verir. Aktif etmek için ücretsiz bir Gemini API key gerekiyor (https://aistudio.google.com/apikey). Aktif olsun mu? (varsayılan: evet)"
+
+Cevap evetse: "Gemini API key'ini yapıştır:" diye sor. Key'i `~/.social-media-scraper.env` içine yaz ama **terminal ekranına yazma**, **commit etme**, **logla**. Dosyayı `chmod 600` ile koru.
+
+Cevap hayırsa: `GEMINI_ENABLED=false` olarak işaretle, google-genai kurma.
+
+**Soru 3 — Transkripsiyon dili**
+
+> "Varsayılan transkripsiyon dili ne olsun? Otomatik algılama (önerilen — 99 dil), Türkçe, İngilizce, ya da başka bir ISO 639-1 dil kodu (örn. fr, de, es). (varsayılan: otomatik)"
+
+Değeri `auto`, `tr`, `en` veya ISO kodu olarak sakla.
+
+### Yapılandırma Dosyası Formatı
+
+`~/.social-media-scraper.env`:
+
+```env
+# Aktif platformlar (virgülle ayrılmış)
+PLATFORMS=instagram,tiktok,twitter,youtube
+
+# Gemini video analizi
+GEMINI_ENABLED=true
+GEMINI_API_KEY=AIza...
+
+# Transkripsiyon
+TRANSCRIPTION_LANG=auto
+WHISPER_MODEL=medium
+```
+
+### Kurulum Adımları (cevaplara göre)
+
+Sadece seçilen platformların araçlarını kur:
+
+```bash
+# Her zaman gerekli
+pip install faster-whisper --break-system-packages
+# ffmpeg: macOS → brew install ffmpeg | Linux → apt install ffmpeg
+
+# Sadece seçilirse
+# instagram:
+pip install instaloader --break-system-packages
+# tiktok veya youtube:
+pip install yt-dlp --break-system-packages
+# twitter:
+npm install -g @steipete/bird
+# gemini aktifse:
+pip install google-genai --break-system-packages
+```
+
+### Sonra
+
+Kurulum bittiğinde kullanıcıya kısa bir özet ver (hangi platformlar aktif, Gemini açık mı, dil ne) ve test için bir örnek link iste.
+
+### Mevcut Yapılandırmayı Okuma
+
+Skill çalışırken `~/.social-media-scraper.env` dosyasını oku ve seçimlere göre davran. Örn. `GEMINI_ENABLED=false` ise görsel analiz adımını atla. `TRANSCRIPTION_LANG=tr` ise Whisper'a `language="tr"` parametresini ver.
+
+```bash
+set -a
+source ~/.social-media-scraper.env 2>/dev/null
+set +a
+```
+
+`PLATFORMS` listesinde olmayan bir platforma link gelirse, kullanıcıya "Bu platform kurulu değil, eklemek ister misin?" diye sor.
+
 ## Genel Akış
 
 1. Kullanıcı bir sosyal medya linki paylaşır
