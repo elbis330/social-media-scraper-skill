@@ -9,6 +9,16 @@
 
 ---
 
+## 🎥 Demo
+
+<div align="center">
+  <img src="assets/demo.gif" alt="Social Media Scraper Skill Demo" width="600">
+  <br>
+  <sub><a href="assets/demo.mp4">▶ Watch full quality MP4</a></sub>
+</div>
+
+---
+
 ## 🤔 What Does This Skill Do?
 
 You see a social media link but you're too lazy to open it. Or you want to know what a video is about without watching it. This skill solves exactly that:
