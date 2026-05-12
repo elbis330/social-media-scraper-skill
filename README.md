@@ -60,7 +60,7 @@ Claude: Bu reel'de @kullaniciadi yeni bir kahve makinesi tanıtıyor.
 ### Hızlı Kurulum (Önerilen)
 
 ```bash
-git clone https://github.com/elbiscasanova/social-media-scraper-skill.git
+git clone https://github.com/elbis330/social-media-scraper-skill.git
 cd social-media-scraper-skill
 chmod +x install.sh
 ./install.sh
