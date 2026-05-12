@@ -57,7 +57,37 @@ Claude: Bu reel'de @kullaniciadi yeni bir kahve makinesi tanıtıyor.
 
 ## 📦 Kurulum
 
-### Hızlı Kurulum (Önerilen)
+İki kurulum yöntemi var. İlkini ne yaptığını anlamayan birine ver — bütün soruları Claude soruyor. İkincisi klasik terminal akışı.
+
+### Yöntem 1 — Claude Code ile (önerilen)
+
+Claude Code'da skill kuruluysa, sadece şunu yaz:
+
+```
+social-media-scraper skill'ini kur
+```
+
+Claude sırasıyla şunları soracak:
+1. Hangi platformlar? (Instagram, TikTok, Twitter/X, YouTube — hepsi veya seçim)
+2. Gemini ile görsel video analizi olsun mu? (evetse API key'i ister)
+3. Transkripsiyon dili? (otomatik / tr / en / diğer)
+
+Cevaplara göre **sadece gerekli araçları** kurar ve yapılandırmayı `~/.social-media-scraper.env` dosyasına yazar.
+
+### Yöntem 2 — Terminal'den interaktif kurulum
+
+```bash
+git clone https://github.com/elbis330/social-media-scraper-skill.git
+cd social-media-scraper-skill
+chmod +x setup.sh
+./setup.sh
+```
+
+`setup.sh` aynı soruları renkli, adım adım sorar ve seçimlere göre kurar. Yapılandırma `~/.social-media-scraper.env` içine kaydedilir (chmod 600 ile korunur).
+
+### Yöntem 3 — Hızlı, sorusuz kurulum
+
+Bütün araçları sormadan kurmak istersen:
 
 ```bash
 git clone https://github.com/elbis330/social-media-scraper-skill.git
@@ -66,11 +96,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Script şunları otomatik yapar:
-- `~/.claude/skills/social-media-scraper/` klasörünü oluşturur
-- `SKILL.md` dosyasını kopyalar
-- Tüm bağımlılıkları kurar (yt-dlp, instaloader, faster-whisper, google-genai, bird, ffmpeg)
-- Gemini API key kontrolü yapar
+`install.sh` hiçbir şey sormaz, tüm platformlara ait tüm araçları kurar (yt-dlp, instaloader, faster-whisper, google-genai, bird, ffmpeg).
 
 ### Manuel Kurulum
 
