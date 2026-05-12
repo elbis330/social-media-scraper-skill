@@ -3,7 +3,7 @@
 .env.local
 .env.*.local
 
-# Skill yapılandırması (API key içerebilir)
+# Skill configuration (may contain API key)
 .social-media-scraper.env
 .social-media-scraper.env.bak.*
 
@@ -55,7 +55,7 @@ pnpm-lock.yaml
 .DS_Store
 Thumbs.db
 
-# Skill çalışma çıktıları
+# Skill runtime outputs
 downloads/
 *.mp4
 *.mp3

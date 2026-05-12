@@ -1,93 +1,93 @@
 ---
 name: social-media-scraper
 description: |
-  Sosyal medya paylaşımlarından tüm verileri çeken ve analiz eden skill. Instagram (reel, post, story), TikTok, Twitter/X ve YouTube linklerinden içerik çeker. Metin, açıklama, yorumlar, beğeni/paylaşım sayıları, tarih bilgisi, hashtag'ler dahil tüm metadata'yı toplar. Video veya ses içeren paylaşımlarda otomatik olarak faster-whisper ile transkripsiyon yapar ve Gemini Vision ile görsel analiz uygular. MANDATORY TRIGGERS: herhangi bir sosyal medya linki paylaşıldığında (instagram.com, tiktok.com, x.com, twitter.com, youtube.com, youtu.be), "bu tweeti oku", "bu reeli çek", "bu videoyu analiz et", "şu paylaşıma bak", "bu linkteki içerik ne", veya herhangi bir sosyal medya URL'si içeren mesaj.
+  Skill that pulls and analyzes all data from social media posts. Fetches content from Instagram (reel, post, story), TikTok, Twitter/X and YouTube links. Collects all metadata including text, description, comments, like/share counts, date info, hashtags. Automatically transcribes with faster-whisper and applies visual analysis with Gemini Vision on posts containing video or audio. MANDATORY TRIGGERS: whenever a social media link is shared (instagram.com, tiktok.com, x.com, twitter.com, youtube.com, youtu.be), "read this tweet", "fetch this reel", "analyze this video", "look at this post", "what is the content of this link", or any message containing a social media URL.
 ---
 
 # Social Media Scraper
 
-Sosyal medya paylaşımlarının tüm verilerini çeken, analiz eden ve video/ses içeriklerin transkripsiyonu + görsel analizini yapan skill.
+A skill that pulls all data from social media posts, analyzes them, and performs transcription + visual analysis for video/audio content.
 
-## İlk Kurulum
+## First-Time Setup
 
-Bu skill ilk kez çağrıldığında veya kullanıcı "kur", "ayarla", "setup", "yapılandır" derse, önce kurulum modunu başlat.
+When this skill is invoked for the first time or when the user says "install", "configure", "setup", run the setup mode first.
 
-### Kurulum Algılama
+### Setup Detection
 
-Yapılandırma dosyası: `~/.social-media-scraper.env`. Dosya yoksa veya kullanıcı yeniden kurulum istiyorsa, aşağıdaki interaktif soruları sor.
+Configuration file: `~/.social-media-scraper.env`. If the file does not exist or the user requests reinstallation, ask the interactive questions below.
 
 ```bash
-test -f ~/.social-media-scraper.env || echo "İlk kurulum gerekli"
+test -f ~/.social-media-scraper.env || echo "First-time setup required"
 ```
 
-### Kurulum Soruları
+### Setup Questions
 
-Soruları **tek tek** sor, kullanıcı her birini cevaplasın. Cevaplara göre `~/.social-media-scraper.env` dosyasını oluştur ve **sadece** seçilen platformlara ait araçları kur.
+Ask the questions **one by one**, letting the user answer each. Based on the answers, create the `~/.social-media-scraper.env` file and install **only** the tools for the selected platforms.
 
-**Soru 1 — Platformlar**
+**Question 1 — Platforms**
 
-> "Hangi platformları kullanmak istiyorsun? Instagram, TikTok, Twitter/X, YouTube — hepsini seçebilirsin ya da sadece istediklerini. (varsayılan: hepsi)"
+> "Which platforms do you want to use? Instagram, TikTok, Twitter/X, YouTube — pick all of them or only the ones you want. (default: all)"
 
-Cevabı virgülle ayrılmış küçük harf liste olarak normalize et: `instagram,tiktok,twitter,youtube`.
+Normalize the answer as a comma-separated lowercase list: `instagram,tiktok,twitter,youtube`.
 
-**Soru 2 — Gemini görsel analizi**
+**Question 2 — Gemini visual analysis**
 
-> "Gemini ile görsel video analizi aktif olsun mu? Bu, ekrandaki yazıları, ürünleri ve sahneleri okur — Whisper'ın çeviremeyeceği görsel bağlamı verir. Aktif etmek için ücretsiz bir Gemini API key gerekiyor (https://aistudio.google.com/apikey). Aktif olsun mu? (varsayılan: evet)"
+> "Should Gemini visual video analysis be enabled? This reads on-screen text, products, and scenes — it provides visual context that Whisper cannot translate. Enabling it requires a free Gemini API key (https://aistudio.google.com/apikey). Enable it? (default: yes)"
 
-Cevap evetse: "Gemini API key'ini yapıştır:" diye sor. Key'i `~/.social-media-scraper.env` içine yaz ama **terminal ekranına yazma**, **commit etme**, **logla**. Dosyayı `chmod 600` ile koru.
+If yes: ask "Paste your Gemini API key:". Write the key into `~/.social-media-scraper.env` but **do not print to terminal**, **do not commit**, **do not log**. Protect the file with `chmod 600`.
 
-Cevap hayırsa: `GEMINI_ENABLED=false` olarak işaretle, google-genai kurma.
+If no: mark `GEMINI_ENABLED=false`, do not install google-genai.
 
-**Soru 3 — Transkripsiyon dili**
+**Question 3 — Transcription language**
 
-> "Varsayılan transkripsiyon dili ne olsun? Otomatik algılama (önerilen — 99 dil), Türkçe, İngilizce, ya da başka bir ISO 639-1 dil kodu (örn. fr, de, es). (varsayılan: otomatik)"
+> "What should the default transcription language be? Auto-detect (recommended — 99 languages), Turkish, English, or another ISO 639-1 language code (e.g. fr, de, es). (default: auto)"
 
-Değeri `auto`, `tr`, `en` veya ISO kodu olarak sakla.
+Store the value as `auto`, `tr`, `en` or an ISO code.
 
-### Yapılandırma Dosyası Formatı
+### Configuration File Format
 
 `~/.social-media-scraper.env`:
 
 ```env
-# Aktif platformlar (virgülle ayrılmış)
+# Active platforms (comma-separated)
 PLATFORMS=instagram,tiktok,twitter,youtube
 
-# Gemini video analizi
+# Gemini video analysis
 GEMINI_ENABLED=true
 GEMINI_API_KEY=AIza...
 
-# Transkripsiyon
+# Transcription
 TRANSCRIPTION_LANG=auto
 WHISPER_MODEL=medium
 ```
 
-### Kurulum Adımları (cevaplara göre)
+### Installation Steps (based on answers)
 
-Sadece seçilen platformların araçlarını kur:
+Install only the tools for the selected platforms:
 
 ```bash
-# Her zaman gerekli
+# Always required
 pip install faster-whisper --break-system-packages
 # ffmpeg: macOS → brew install ffmpeg | Linux → apt install ffmpeg
 
-# Sadece seçilirse
+# Only if selected
 # instagram:
 pip install instaloader --break-system-packages
-# tiktok veya youtube:
+# tiktok or youtube:
 pip install yt-dlp --break-system-packages
 # twitter:
 npm install -g @steipete/bird
-# gemini aktifse:
+# if gemini enabled:
 pip install google-genai --break-system-packages
 ```
 
-### Sonra
+### After Setup
 
-Kurulum bittiğinde kullanıcıya kısa bir özet ver (hangi platformlar aktif, Gemini açık mı, dil ne) ve test için bir örnek link iste.
+When setup is complete, give the user a short summary (which platforms are active, whether Gemini is enabled, what language) and ask for a sample link to test.
 
-### Mevcut Yapılandırmayı Okuma
+### Reading the Current Configuration
 
-Skill çalışırken `~/.social-media-scraper.env` dosyasını oku ve seçimlere göre davran. Örn. `GEMINI_ENABLED=false` ise görsel analiz adımını atla. `TRANSCRIPTION_LANG=tr` ise Whisper'a `language="tr"` parametresini ver.
+When the skill is running, read the `~/.social-media-scraper.env` file and behave according to the selections. E.g. if `GEMINI_ENABLED=false`, skip the visual analysis step. If `TRANSCRIPTION_LANG=tr`, pass `language="tr"` to Whisper.
 
 ```bash
 set -a
@@ -95,150 +95,150 @@ source ~/.social-media-scraper.env 2>/dev/null
 set +a
 ```
 
-`PLATFORMS` listesinde olmayan bir platforma link gelirse, kullanıcıya "Bu platform kurulu değil, eklemek ister misin?" diye sor.
+If a link from a platform not in the `PLATFORMS` list arrives, ask the user "This platform is not installed, would you like to add it?".
 
-## Genel Akış
+## General Flow
 
-1. Kullanıcı bir sosyal medya linki paylaşır
-2. Platform otomatik algılanır (URL'den)
-3. Platforma uygun araç ile tüm veriler çekilir
-4. Video/ses içerik varsa: indir → ffmpeg ile ses çıkar → faster-whisper ile transkript al → Gemini ile görsel/ekran analizi → geçici dosyaları sil
-5. Transkripsiyon + görsel analiz birleştirilerek tam bir anlayış oluşturulur
-6. Sonuçları kullanıcıya temiz ve okunabilir şekilde sun
+1. The user shares a social media link
+2. The platform is auto-detected (from the URL)
+3. All data is fetched with the appropriate tool for the platform
+4. If video/audio content exists: download → extract audio with ffmpeg → transcribe with faster-whisper → analyze visuals/screen with Gemini → delete temporary files
+5. Transcription + visual analysis are merged into a full understanding
+6. Present results to the user in a clean and readable way
 
-## Platform Algılama
+## Platform Detection
 
-URL'ye bakarak platformu belirle:
-- `instagram.com` veya `instagr.am` → Instagram
+Detect the platform by looking at the URL:
+- `instagram.com` or `instagr.am` → Instagram
 - `tiktok.com` → TikTok
-- `x.com` veya `twitter.com` → Twitter/X
-- `youtube.com` veya `youtu.be` → YouTube
+- `x.com` or `twitter.com` → Twitter/X
+- `youtube.com` or `youtu.be` → YouTube
 
-## Platform Bazlı Araçlar
+## Per-Platform Tools
 
 ### Twitter/X
-Öncelik sırası:
-1. `bird` CLI (npm paketi: @steipete/bird) — en kapsamlı, tweet + reply thread + medya bilgisi
-2. Jina Reader (`curl -s "https://r.jina.ai/TWEET_URL"`) — yedek yöntem
-3. Tarayıcı ile okuma — son çare
+Priority order:
+1. `bird` CLI (npm package: @steipete/bird) — most comprehensive, tweet + reply thread + media info
+2. Jina Reader (`curl -s "https://r.jina.ai/TWEET_URL"`) — fallback method
+3. Reading via browser — last resort
 
-bird CLI kullanımı:
+bird CLI usage:
 ```bash
 bird --urls "TWEET_URL"
 ```
 
-bird kurulu değilse: `npm install -g @steipete/bird`
-bird çalışması için Chrome cookie'leri gerekebilir, otomatik algılar.
+If bird is not installed: `npm install -g @steipete/bird`
+bird may need Chrome cookies to work, it auto-detects them.
 
 ### Instagram
-Öncelik sırası:
-1. `instaloader` (pip paketi) — reel, post, story indirme ve metadata
-2. `instagrapi` (pip paketi) — daha kapsamlı API, giriş gerektirebilir
-3. yt-dlp — yedek video indirme
+Priority order:
+1. `instaloader` (pip package) — reel, post, story download and metadata
+2. `instagrapi` (pip package) — more comprehensive API, may require login
+3. yt-dlp — fallback video download
 
-instaloader kullanımı:
+instaloader usage:
 ```bash
 pip install instaloader --break-system-packages
 instaloader -- -SHORTCODE
 ```
 
-Shortcode URL'den çıkarılır: instagram.com/reel/SHORTCODE/ veya instagram.com/p/SHORTCODE/
+The shortcode is extracted from the URL: instagram.com/reel/SHORTCODE/ or instagram.com/p/SHORTCODE/
 
-Metadata çekme (Python):
+Fetching metadata (Python):
 ```python
 import instaloader
 L = instaloader.Instaloader()
 post = instaloader.Post.from_shortcode(L.context, "SHORTCODE")
-print(f"Başlık: {post.caption}")
-print(f"Beğeni: {post.likes}")
-print(f"Yorum sayısı: {post.comments}")
-print(f"Tarih: {post.date}")
-print(f"Hashtag'ler: {post.caption_hashtags}")
+print(f"Caption: {post.caption}")
+print(f"Likes: {post.likes}")
+print(f"Comment count: {post.comments}")
+print(f"Date: {post.date}")
+print(f"Hashtags: {post.caption_hashtags}")
 ```
 
 ### TikTok
-Öncelik sırası:
-1. yt-dlp ile video + metadata indirme
-2. Jina Reader ile sayfa içeriği çekme
+Priority order:
+1. Download video + metadata with yt-dlp
+2. Fetch page content with Jina Reader
 
-yt-dlp kullanımı:
+yt-dlp usage:
 ```bash
 yt-dlp --write-info-json --write-comments -o "downloads/%(id)s.%(ext)s" "TIKTOK_URL"
 ```
 
-yt-dlp kurulu değilse: `pip install yt-dlp --break-system-packages`
-TikTok için cookie gerekebilir: `yt-dlp --cookies-from-browser chrome "URL"`
+If yt-dlp is not installed: `pip install yt-dlp --break-system-packages`
+Cookies may be required for TikTok: `yt-dlp --cookies-from-browser chrome "URL"`
 
 ### YouTube
-yt-dlp ile video + metadata + yorumlar:
+Video + metadata + comments with yt-dlp:
 ```bash
 yt-dlp --write-info-json --write-comments --skip-download -o "downloads/%(id)s.%(ext)s" "YOUTUBE_URL"
 ```
 
-Video transkripsiyonu gerekiyorsa (altyazı yoksa):
+If video transcription is needed (when no captions are available):
 ```bash
 yt-dlp -f "bestaudio" -o "downloads/audio.%(ext)s" "YOUTUBE_URL"
 ```
 
-## Transkripsiyon (Video/Ses İçerikler İçin)
+## Transcription (For Video/Audio Content)
 
-Video veya ses içeren her paylaşımda otomatik olarak transkripsiyon yap. Kullanıcının ayrıca istemesine gerek yok.
+Automatically transcribe every post containing video or audio. The user does not need to ask separately.
 
-### Adımlar:
-1. Videoyu indir (platforma göre uygun araçla)
-2. ffmpeg ile sesi çıkar:
+### Steps:
+1. Download the video (with the appropriate tool per platform)
+2. Extract audio with ffmpeg:
 ```bash
 ffmpeg -i video.mp4 -vn -acodec pcm_s16le -ar 16000 -ac 1 audio.wav
 ```
-3. faster-whisper ile transkripsiyon:
+3. Transcribe with faster-whisper:
 ```python
 from faster_whisper import WhisperModel
 model = WhisperModel("medium", compute_type="int8")
 segments, info = model.transcribe("audio.wav")
-print(f"Algılanan dil: {info.language} ({info.language_probability:.0%})")
+print(f"Detected language: {info.language} ({info.language_probability:.0%})")
 for segment in segments:
     print(f"[{segment.start:.1f}s → {segment.end:.1f}s] {segment.text}")
 ```
-4. Geçici video ve ses dosyalarını sil (yer kaplamasın)
+4. Delete temporary video and audio files (to save space)
 
-faster-whisper kurulu değilse: `pip install faster-whisper --break-system-packages`
-ffmpeg kurulu değilse: `brew install ffmpeg` (macOS) veya `apt install ffmpeg` (Linux)
+If faster-whisper is not installed: `pip install faster-whisper --break-system-packages`
+If ffmpeg is not installed: `brew install ffmpeg` (macOS) or `apt install ffmpeg` (Linux)
 
-## Video Analizi (Gemini Vision)
+## Video Analysis (Gemini Vision)
 
-Video içeren paylaşımlarda sadece sesin transkripsiyonu yeterli değil. Ekranda akan yazılar, gösterilen ürünler, arayüzler, logolar, jestler, sahne geçişleri — bunların hepsi anlamın parçası. Whisper sadece konuşmayı çevirir; ekranda görüneni Gemini ile analiz et.
+For posts containing video, transcribing the audio alone is not enough. On-screen text, displayed products, interfaces, logos, gestures, scene transitions — all of these are part of the meaning. Whisper only translates speech; use Gemini to analyze what appears on screen.
 
-### Akış
-1. Videoyu indir (yt-dlp / instaloader / vb.)
-2. Whisper ile ses transkripsiyonu al (yukarıdaki bölüm)
-3. Gemini File API ile videoyu yükle, analiz et
-4. İki kaynağı birleştirip kullanıcıya sun
-5. Geçici dosyaları sil
+### Flow
+1. Download the video (yt-dlp / instaloader / etc.)
+2. Transcribe audio with Whisper (section above)
+3. Upload the video with Gemini File API, analyze it
+4. Merge the two sources and present to the user
+5. Delete temporary files
 
 ### API Key
-Gemini API key'i `GEMINI_API_KEY` environment variable'ı üzerinden okunur. API key'i [Google AI Studio](https://aistudio.google.com/apikey) üzerinden ücretsiz alabilirsin.
+The Gemini API key is read from the `GEMINI_API_KEY` environment variable. You can get an API key for free from [Google AI Studio](https://aistudio.google.com/apikey).
 
-Kurulum:
+Setup:
 ```bash
 export GEMINI_API_KEY="your_api_key_here"
 ```
 
-Kalıcı olarak shell config'e eklemek için:
+To add it permanently to your shell config:
 ```bash
 echo 'export GEMINI_API_KEY="your_api_key_here"' >> ~/.zshrc   # macOS / zsh
 echo 'export GEMINI_API_KEY="your_api_key_here"' >> ~/.bashrc  # Linux / bash
 ```
 
-`.env` dosyası kullanıyorsan:
+If you use a `.env` file:
 ```bash
 export GEMINI_API_KEY=$(grep "^GEMINI_API_KEY=" .env | cut -d= -f2- | tr -d '"' | tr -d "'" | tr -d ' ')
 ```
 
-### Önemli: ASCII dosya yolu
-Gemini SDK upload'da httpx, dosya adındaki Türkçe karakterleri (ı, ş, ç, ö, ğ) ASCII'ye çeviremeyip patlıyor. Yüklemeden önce videoyu `/tmp/video.mp4` gibi ASCII bir yola kopyala.
+### Important: ASCII file path
+In Gemini SDK upload, httpx cannot convert non-ASCII characters (ı, ş, ç, ö, ğ) in the filename and crashes. Before uploading, copy the video to an ASCII path like `/tmp/video.mp4`.
 
-### Kod (yeni SDK: google-genai)
-Eski `google.generativeai` paketi deprecated. Yeni `google-genai` paketini kullan:
+### Code (new SDK: google-genai)
+The old `google.generativeai` package is deprecated. Use the new `google-genai` package:
 
 ```python
 import os, time, shutil
@@ -248,7 +248,7 @@ src = "downloads/instagram_reel.mp4"
 tmp = "/tmp/scraper_video.mp4"
 shutil.copy(src, tmp)
 
-client = genai.Client()  # GEMINI_API_KEY env var'dan okunur
+client = genai.Client()  # read from GEMINI_API_KEY env var
 f = client.files.upload(file=tmp)
 
 while f.state.name == "PROCESSING":
@@ -259,11 +259,11 @@ if f.state.name != "ACTIVE":
     raise RuntimeError(f"Gemini upload failed: {f.state.name}")
 
 prompt = (
-    "Bu videoda neler oluyor? Şunları detaylı anlat: "
-    "ekranda görünen yazılar/başlıklar, logolar, ürün isimleri, "
-    "arayüzler (uygulama/website), gösterilen yer veya kişiler, "
-    "anlatım sırasını ve önemli sahneleri. "
-    "Türkçe yanıtla."
+    "What is happening in this video? Describe in detail: "
+    "on-screen text/titles, logos, product names, "
+    "interfaces (app/website), locations or people shown, "
+    "the narrative order and key scenes. "
+    "Respond in English."
 )
 resp = client.models.generate_content(model="gemini-2.5-flash", contents=[f, prompt])
 visual_analysis = resp.text
@@ -272,47 +272,47 @@ client.files.delete(name=f.name)
 os.remove(tmp)
 ```
 
-Kurulum:
+Install:
 ```bash
 pip install google-genai --break-system-packages
 ```
 
-### Birleştirme
-Whisper transkripti + Gemini görsel analizi birlikte tek bir anlatıma çevir. Örnek yapı:
+### Merging
+Combine the Whisper transcript and Gemini visual analysis into a single narrative. Example structure:
 
-- **Konuşma (Whisper):** "Bugün size yeni bir ürünü göstereceğim..."
-- **Ekran/Görsel (Gemini):** "Video bir e-ticaret sitesinde ürün detay sayfasını gösteriyor, kullanıcı fiyat ve özelliklere odaklanıyor, iç/dış görsellerde geziniyor..."
+- **Speech (Whisper):** "Today I'm going to show you a new product..."
+- **Screen/Visual (Gemini):** "The video shows a product detail page on an e-commerce site, the user is focused on price and features, browsing interior/exterior images..."
 
-Kullanıcıya akıcı paragraflar halinde anlat, "konuştuğu şey şu, ekranda gösterdiği şey şu" diye birleştirerek.
+Present it to the user in fluent paragraphs, merging "what they said" with "what they showed on screen".
 
-## Çıktı Formatı
+## Output Format
 
-Sonuçları kullanıcıya şu şekilde sun (basit, okunabilir, listesiz):
+Present results to the user as follows (simple, readable, no lists):
 
-**Paylaşım bilgisi:** Kim paylaşmış, ne zaman, hangi platform
-**İçerik:** Paylaşımın metni veya açıklaması
-**Etkileşim:** Beğeni, yorum, paylaşım, görüntülenme sayıları
-**Yorumlar:** Öne çıkan yorumların özeti (çok fazla varsa en dikkat çekici olanları seç)
-**Transkripsiyon:** Video/ses varsa tam metin (zaman damgalı)
+**Post info:** Who posted, when, on which platform
+**Content:** The post's text or description
+**Engagement:** Like, comment, share, view counts
+**Comments:** Summary of standout comments (if there are many, pick the most notable ones)
+**Transcription:** Full text with timestamps if there is video/audio
 
-Kullanıcı bu işlerden pek anlamayan biri olabilir. Teknik jargon kullanma, basit ve akıcı paragraflarla anlat. Uzun listeler ve tablolar yerine doğal dilde özetle.
+The user may not be a technical person. Avoid jargon, explain in simple, fluent paragraphs. Summarize in natural language rather than long lists and tables.
 
-## Bağımlılıklar
+## Dependencies
 
-Bu araçlar gerektiğinde otomatik kurulacak:
+These tools will be installed automatically when needed:
 - bird CLI: `npm install -g @steipete/bird`
 - instaloader: `pip install instaloader --break-system-packages`
 - yt-dlp: `pip install yt-dlp --break-system-packages`
 - faster-whisper: `pip install faster-whisper --break-system-packages`
-- ffmpeg: `brew install ffmpeg` (macOS) veya `apt install ffmpeg` (Linux)
-- google-genai (Gemini Vision): `pip install google-genai --break-system-packages` — kullanım için `GEMINI_API_KEY` env var gerekli
+- ffmpeg: `brew install ffmpeg` (macOS) or `apt install ffmpeg` (Linux)
+- google-genai (Gemini Vision): `pip install google-genai --break-system-packages` — requires `GEMINI_API_KEY` env var to use
 
-Her aracı kullanmadan önce kurulu olup olmadığını kontrol et. Kurulu değilse kur.
+Check whether each tool is installed before using it. Install if not.
 
-## Önemli Notlar
+## Important Notes
 
-- Video/ses dosyaları geçicidir, transkripsiyon alındıktan sonra silinir
-- Metin verileri (transkript, yorumlar, metadata) saklanabilir
-- Bazı platformlar giriş gerektirebilir, bu durumda kullanıcıyı bilgilendir
-- Hata alırsan bir sonraki yönteme geç, kullanıcıya sadece sonucu sun
-- Cookie gerektiğinde `--cookies-from-browser chrome` kullan
+- Video/audio files are temporary, deleted after transcription is taken
+- Text data (transcript, comments, metadata) can be stored
+- Some platforms may require login, in that case inform the user
+- If you get an error, try the next method, present only the result to the user
+- Use `--cookies-from-browser chrome` when cookies are needed

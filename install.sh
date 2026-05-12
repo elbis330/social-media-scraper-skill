@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# Social Media Scraper — tek komut kurulum
-# Kullanım: ./install.sh
+# Social Media Scraper — one-command install
+# Usage: ./install.sh
 #
 set -euo pipefail
 
-# Renkler
+# Colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
@@ -18,57 +18,57 @@ warn()    { echo -e "${YELLOW}⚠${NC}  $*"; }
 err()     { echo -e "${RED}✗${NC}  $*"; }
 
 echo ""
-echo "🎬 Social Media Scraper Skill — Kurulum"
+echo "🎬 Social Media Scraper Skill — Install"
 echo "========================================"
 echo ""
 
-# 1) İşletim sistemini algıla
+# 1) Detect the operating system
 OS="$(uname -s)"
 case "$OS" in
     Darwin*) PLATFORM="macos" ;;
     Linux*)  PLATFORM="linux" ;;
-    *)       err "Desteklenmeyen platform: $OS"; exit 1 ;;
+    *)       err "Unsupported platform: $OS"; exit 1 ;;
 esac
-ok "Platform algılandı: $PLATFORM"
+ok "Platform detected: $PLATFORM"
 
-# 2) Bağımlılık kontrolü
+# 2) Dependency check
 need_cmd() {
     if ! command -v "$1" >/dev/null 2>&1; then
-        err "Gerekli komut bulunamadı: $1"
-        echo "    Yüklemek için: $2"
+        err "Required command not found: $1"
+        echo "    To install: $2"
         exit 1
     fi
 }
 
-info "Sistem gereksinimleri kontrol ediliyor..."
+info "Checking system requirements..."
 need_cmd python3 "https://www.python.org/downloads/"
-need_cmd pip3    "Python ile birlikte gelir"
+need_cmd pip3    "Comes with Python"
 need_cmd npm     "https://nodejs.org/"
 need_cmd git     "https://git-scm.com/downloads"
-ok "Temel bağımlılıklar mevcut"
+ok "Base dependencies present"
 
 # 3) ffmpeg
 if ! command -v ffmpeg >/dev/null 2>&1; then
-    warn "ffmpeg bulunamadı, yükleniyor..."
+    warn "ffmpeg not found, installing..."
     if [ "$PLATFORM" = "macos" ]; then
         if command -v brew >/dev/null 2>&1; then
             brew install ffmpeg
         else
-            err "Homebrew kurulu değil. https://brew.sh adresinden kur, sonra tekrar dene."
+            err "Homebrew is not installed. Install it from https://brew.sh and try again."
             exit 1
         fi
     else
         sudo apt-get update && sudo apt-get install -y ffmpeg
     fi
-    ok "ffmpeg yüklendi"
+    ok "ffmpeg installed"
 else
-    ok "ffmpeg zaten kurulu"
+    ok "ffmpeg is already installed"
 fi
 
-# 4) Python paketleri
-info "Python paketleri yükleniyor..."
+# 4) Python packages
+info "Installing Python packages..."
 PIP_FLAGS="--upgrade"
-# Bazı modern Python sürümleri externally-managed env hatası verir
+# Some modern Python versions throw externally-managed env errors
 if pip3 install --help 2>&1 | grep -q "break-system-packages"; then
     PIP_FLAGS="$PIP_FLAGS --break-system-packages"
 fi
@@ -79,55 +79,55 @@ pip3 install $PIP_FLAGS \
     faster-whisper \
     google-genai
 
-ok "Python paketleri yüklendi"
+ok "Python packages installed"
 
 # 5) bird CLI (Twitter/X)
-info "bird CLI yükleniyor (Twitter/X için)..."
+info "Installing bird CLI (for Twitter/X)..."
 if ! command -v bird >/dev/null 2>&1; then
     npm install -g @steipete/bird
-    ok "bird CLI yüklendi"
+    ok "bird CLI installed"
 else
-    ok "bird CLI zaten kurulu"
+    ok "bird CLI is already installed"
 fi
 
-# 6) Skill'i yerleştir
+# 6) Place the skill
 SKILL_DIR="$HOME/.claude/skills/social-media-scraper"
-info "Skill yerleştiriliyor: $SKILL_DIR"
+info "Placing skill: $SKILL_DIR"
 mkdir -p "$SKILL_DIR"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cp "$SCRIPT_DIR/SKILL.md" "$SKILL_DIR/SKILL.md"
-ok "SKILL.md kopyalandı"
+ok "SKILL.md copied"
 
-# 7) Gemini API Key kontrolü
+# 7) Gemini API Key check
 echo ""
 if [ -z "${GEMINI_API_KEY:-}" ]; then
-    warn "GEMINI_API_KEY environment variable tanımlı değil"
+    warn "GEMINI_API_KEY environment variable is not defined"
     echo ""
-    echo "    Gemini Vision özelliğini kullanmak için ücretsiz API key al:"
+    echo "    To use the Gemini Vision feature, get a free API key:"
     echo "    👉  https://aistudio.google.com/apikey"
     echo ""
-    echo "    Sonra şu komutu çalıştır (zsh için):"
+    echo "    Then run this command (for zsh):"
     echo "        echo 'export GEMINI_API_KEY=\"your_key_here\"' >> ~/.zshrc"
     echo "        source ~/.zshrc"
     echo ""
-    echo "    bash için:"
+    echo "    For bash:"
     echo "        echo 'export GEMINI_API_KEY=\"your_key_here\"' >> ~/.bashrc"
     echo "        source ~/.bashrc"
     echo ""
-    warn "API key olmadan görsel analiz çalışmaz — diğer her şey sorunsuz çalışacak."
+    warn "Without an API key, visual analysis won't work — everything else will work fine."
 else
-    ok "GEMINI_API_KEY tanımlı"
+    ok "GEMINI_API_KEY is set"
 fi
 
-# 8) Tamamlandı
+# 8) Done
 echo ""
 echo "========================================"
-ok "Kurulum tamamlandı! 🎉"
+ok "Installation complete! 🎉"
 echo ""
-echo "Şimdi Claude Code'u yeniden başlat ve şunu dene:"
+echo "Now restart Claude Code and try this:"
 echo ""
-echo "    \"Bu reel'i analiz et: https://www.instagram.com/reel/<bir_link>/\""
+echo "    \"Analyze this reel: https://www.instagram.com/reel/<a_link>/\""
 echo ""
-echo "Sorun yaşarsan: https://github.com/elbis330/social-media-scraper-skill/issues"
+echo "If you run into issues: https://github.com/elbis330/social-media-scraper-skill/issues"
 echo ""
