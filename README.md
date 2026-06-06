@@ -1,9 +1,11 @@
-# 🎬 Social Media Scraper Skill for Claude Code
+# 🎬 Social Media Scraper Skill
 
-> **Drop a single link, and Claude fetches everything.** Instagram reel, TikTok video, Twitter thread, YouTube video — doesn't matter. Text, comments, likes, transcription **and** analysis of what's on screen via Gemini Vision, all delivered as a single fluent summary.
+> **Drop a single link, and your AI agent fetches everything.** Instagram reel, TikTok video, Twitter thread, YouTube video — doesn't matter. Text, comments, likes, transcription **and** analysis of what's on screen via Gemini Vision, all delivered as a single fluent summary.
+
+A portable, tool-agnostic **Agent Skill**: a single `SKILL.md` plus install scripts that work with any agentic AI coding assistant that supports the skill format — Claude Code, OpenAI Codex, OpenCode, Cline, and others.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-7C3AED)](https://claude.com/claude-code)
+[![Agent Skill](https://img.shields.io/badge/Agent-Skill-7C3AED)](#-installation)
 [![Platforms](https://img.shields.io/badge/Platforms-Instagram%20%7C%20TikTok%20%7C%20X%20%7C%20YouTube-blue)](#-supported-platforms)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-contributing)
 
@@ -65,17 +67,17 @@ This skill turns any social media link into structured, actionable data:
 
 ## 📦 Installation
 
-There are two installation methods. Give the first one to someone who doesn't know what they're doing — Claude asks all the questions. The second is the classic terminal flow.
+There are three installation methods. Give the first one to someone who doesn't know what they're doing — the agent asks all the questions. The others are the classic terminal flow.
 
-### Method 1 — With Claude Code (recommended)
+### Method 1 — Through your AI coding agent (recommended)
 
-If the skill is installed in Claude Code, just type:
+Once the skill is installed in your agent (Claude Code, OpenAI Codex, OpenCode, Cline, …), just type:
 
 ```
 install the social-media-scraper skill
 ```
 
-Claude will ask the following in order:
+The agent will ask the following in order:
 1. Which platforms? (Instagram, TikTok, Twitter/X, YouTube — all or a selection)
 2. Should Gemini visual video analysis be enabled? (if yes, asks for the API key)
 3. Transcription language? (auto / tr / en / other)
@@ -110,7 +112,10 @@ chmod +x install.sh
 
 #### 1. Place the Skill
 
+Copy `SKILL.md` into the directory your agent loads skills from. The default below is Claude Code's skills folder; set `AGENT_SKILLS_DIR` (used by the install scripts) or substitute your own agent's skills path as needed.
+
 ```bash
+# Default (Claude Code). Replace the path with your agent's skills directory if different.
 mkdir -p ~/.claude/skills/social-media-scraper
 cp SKILL.md ~/.claude/skills/social-media-scraper/SKILL.md
 ```
@@ -140,7 +145,7 @@ source ~/.zshrc
 
 #### 4. Verify
 
-Restart Claude Code and test:
+Restart your AI agent and test:
 
 ```
 Analyze this reel: https://www.instagram.com/reel/EXAMPLE/
@@ -156,7 +161,7 @@ Analyze this reel: https://www.instagram.com/reel/EXAMPLE/
 User:   What is this reel about?
         https://www.instagram.com/reel/Cxyz12345/
 
-Claude: [automatically downloads, transcribes, analyzes visuals]
+Agent:  [automatically downloads, transcribes, analyzes visuals]
         Posted by: @username (45.2K followers)
         Date: March 8, 2026, 14:32
         Likes: 12,432  ·  Comments: 248
@@ -174,7 +179,7 @@ Claude: [automatically downloads, transcribes, analyzes visuals]
 User:   Summarize this thread:
         https://x.com/example/status/1234567890
 
-Claude: [pulls the entire thread with bird CLI]
+Agent:  [pulls the entire thread with bird CLI]
         [presents a summary]
 ```
 
@@ -184,7 +189,7 @@ Claude: [pulls the entire thread with bird CLI]
 User:   Why does this TikTok have so many comments?
         https://www.tiktok.com/@user/video/123
 
-Claude: [downloads video, transcribes + visual analysis]
+Agent:  [downloads video, transcribes + visual analysis]
         [groups and presents the most notable comments]
 ```
 
@@ -194,7 +199,7 @@ Claude: [downloads video, transcribes + visual analysis]
 User:   This video is long, summarize it for me in 20 seconds:
         https://www.youtube.com/watch?v=abc123
 
-Claude: [pulls metadata + captions with yt-dlp, transcribes if absent]
+Agent:  [pulls metadata + captions with yt-dlp, transcribes if absent]
         [presents a summary]
 ```
 
@@ -207,7 +212,7 @@ Claude: [pulls metadata + captions with yt-dlp, transcribes if absent]
 | Python | 3.10+ | yt-dlp, instaloader, faster-whisper, google-genai |
 | Node.js | 18+ | bird CLI (Twitter/X) |
 | ffmpeg | any | Video → audio conversion |
-| Claude Code | latest | Running the skill |
+| An agentic AI coding assistant | — | Runs the skill (Claude Code, OpenAI Codex, OpenCode, Cline, …) |
 | **Gemini API Key** | — | For visual analysis ([free](https://aistudio.google.com/apikey)) |
 
 > **Note:** All Python packages are installed system-wide with `--break-system-packages`. If you want to use a virtualenv, edit the relevant commands inside `install.sh`.
@@ -304,5 +309,5 @@ This skill stands on the shoulders of these projects:
 
 <p align="center">
   <b>🌟 If you liked it, don't forget to leave a star!</b><br>
-  <sub>Made with ☕ for the Claude Code community</sub>
+  <sub>Made with ☕ for the open-source community</sub>
 </p>

@@ -91,7 +91,10 @@ else
 fi
 
 # 6) Place the skill
-SKILL_DIR="$HOME/.claude/skills/social-media-scraper"
+# Works with any agent that loads skills from a directory. Override with
+# AGENT_SKILLS_DIR for your agent (default: Claude Code's ~/.claude/skills).
+SKILLS_ROOT="${AGENT_SKILLS_DIR:-$HOME/.claude/skills}"
+SKILL_DIR="$SKILLS_ROOT/social-media-scraper"
 info "Placing skill: $SKILL_DIR"
 mkdir -p "$SKILL_DIR"
 
@@ -125,7 +128,7 @@ echo ""
 echo "========================================"
 ok "Installation complete! 🎉"
 echo ""
-echo "Now restart Claude Code and try this:"
+echo "Now restart your AI coding agent and try this:"
 echo ""
 echo "    \"Analyze this reel: https://www.instagram.com/reel/<a_link>/\""
 echo ""
