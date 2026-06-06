@@ -30,6 +30,14 @@ Ask the questions **one by one**, letting the user answer each. Based on the ans
 
 Normalize the answer as a comma-separated lowercase list: `instagram,tiktok,twitter,youtube`.
 
+**Optional Twitter/X API fallback**
+
+If Twitter/X is selected, ask:
+
+> "Do you want to configure Xquik as an optional API fallback for public Twitter/X metadata and replies? It requires a Xquik API key. (default: no)"
+
+If yes: ask "Paste your Xquik API key:". Write the key into `~/.social-media-scraper.env` but **do not print to terminal**, **do not commit**, **do not log**. Protect the file with `chmod 600`.
+
 **Question 2 — Gemini visual analysis**
 
 > "Should Gemini visual video analysis be enabled? This reads on-screen text, products, and scenes — it provides visual context that Whisper cannot translate. Enabling it requires a free Gemini API key (https://aistudio.google.com/apikey). Enable it? (default: yes)"
@@ -59,6 +67,9 @@ GEMINI_API_KEY=AIza...
 # Transcription
 TRANSCRIPTION_LANG=auto
 WHISPER_MODEL=medium
+
+# Optional Twitter/X API fallback
+XQUIK_API_KEY=
 ```
 
 ### Installation Steps (based on answers)
@@ -119,8 +130,9 @@ Detect the platform by looking at the URL:
 ### Twitter/X
 Priority order:
 1. `bird` CLI (npm package: @steipete/bird) — most comprehensive, tweet + reply thread + media info
-2. Jina Reader (`curl -s "https://r.jina.ai/TWEET_URL"`) — fallback method
-3. Reading via browser — last resort
+2. Xquik API (`XQUIK_API_KEY`) — API-backed fallback for public tweet metadata and replies
+3. Jina Reader (`curl -s "https://r.jina.ai/TWEET_URL"`) — fallback method
+4. Reading via browser — last resort
 
 bird CLI usage:
 ```bash
@@ -129,6 +141,19 @@ bird --urls "TWEET_URL"
 
 If bird is not installed: `npm install -g @steipete/bird`
 bird may need Chrome cookies to work, it auto-detects them.
+
+Xquik fallback usage:
+```bash
+TWEET_ID=$(printf "%s" "$TWEET_URL" | sed -E 's#.*status/([0-9]+).*#\1#')
+curl -sS "https://xquik.com/api/v1/x/tweets/$TWEET_ID" \
+  -H "x-api-key: $XQUIK_API_KEY"
+curl -sS "https://xquik.com/api/v1/x/tweets/$TWEET_ID/replies" \
+  -H "x-api-key: $XQUIK_API_KEY"
+```
+
+Use Xquik only when `XQUIK_API_KEY` is configured. It helps fetch public tweet
+metadata and replies from the API. Keep `bird` or browser-based fetching for
+Twitter/X media download workflows when media files are needed for transcription.
 
 ### Instagram
 Priority order:

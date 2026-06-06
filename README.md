@@ -79,8 +79,9 @@ install the social-media-scraper skill
 
 The agent will ask the following in order:
 1. Which platforms? (Instagram, TikTok, Twitter/X, YouTube — all or a selection)
-2. Should Gemini visual video analysis be enabled? (if yes, asks for the API key)
-3. Transcription language? (auto / tr / en / other)
+2. Optional Twitter/X API fallback? (if yes, asks for a Xquik API key)
+3. Should Gemini visual video analysis be enabled? (if yes, asks for the API key)
+4. Transcription language? (auto / tr / en / other)
 
 Based on the answers, it installs **only the required tools** and writes the configuration to `~/.social-media-scraper.env`.
 
@@ -145,7 +146,17 @@ echo 'export GEMINI_API_KEY="your_api_key_here"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-#### 4. Verify
+#### 4. Optional Twitter/X API Fallback
+
+For public Twitter/X metadata and replies, you can set a Xquik API key. This is
+only a fallback when the local `bird` CLI path is unavailable or incomplete.
+
+```bash
+echo 'export XQUIK_API_KEY="your_xquik_api_key_here"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+#### 5. Verify
 
 Restart your AI agent and test:
 
@@ -216,6 +227,7 @@ Agent:  [pulls metadata + captions with yt-dlp, transcribes if absent]
 | ffmpeg | any | Video → audio conversion |
 | An agentic AI coding assistant | — | Runs the skill (any agent that supports the skill format) |
 | **Gemini API Key** | — | For visual analysis ([free](https://aistudio.google.com/apikey)) |
+| Xquik API Key | optional | API-backed Twitter/X metadata and replies fallback |
 
 > **Note:** All Python packages are installed system-wide with `--break-system-packages`. If you want to use a virtualenv, edit the relevant commands inside `install.sh`.
 
@@ -232,7 +244,7 @@ Social media link
 └────────┬──────────┘
          ▼
 ┌───────────────────┐
-│ Metadata + media  │ (bird / instaloader / yt-dlp)
+│ Metadata + media  │ (bird / Xquik / Jina / browser / instaloader / yt-dlp)
 │ download          │
 └────────┬──────────┘
          ▼
@@ -305,6 +317,7 @@ This skill stands on the shoulders of these projects:
 - [instaloader](https://github.com/instaloader/instaloader) — Instagram scraping
 - [faster-whisper](https://github.com/SYSTRAN/faster-whisper) — fast local transcription
 - [bird](https://github.com/steipete/bird) — Twitter/X CLI
+- [Xquik](https://xquik.com) — optional Twitter/X API fallback
 - [google-genai](https://github.com/googleapis/python-genai) — Gemini Python SDK
 
 ---

@@ -147,6 +147,27 @@ fi
 
 ok "Selected platforms: $PLATFORM_LIST"
 
+XQUIK_API_KEY_VALUE=""
+if $WANT_TWITTER; then
+    header "Optional Twitter/X API Fallback"
+    cat <<EOF
+Xquik can be used as an optional API fallback for public Twitter/X metadata
+and replies when the local bird CLI path is unavailable or incomplete.
+
+EOF
+    if ask_yn "Configure Xquik API fallback?" "n"; then
+        entered_xquik_key=$(ask "Xquik API key" "")
+        if [ -n "$entered_xquik_key" ]; then
+            XQUIK_API_KEY_VALUE="$entered_xquik_key"
+            ok "Xquik API fallback: configured"
+        else
+            warn "Xquik API fallback skipped"
+        fi
+    else
+        warn "Xquik API fallback: disabled"
+    fi
+fi
+
 # ────────────────────────────────────────────────────────────────────
 # Step 2/4: Gemini video analysis
 # ────────────────────────────────────────────────────────────────────
@@ -254,6 +275,7 @@ $WANT_INSTAGRAM && echo "  ${DIM}•${NC} For Instagram: instaloader"
 $WANT_TIKTOK    && echo "  ${DIM}•${NC} For TikTok: yt-dlp"
 $WANT_YOUTUBE   && echo "  ${DIM}•${NC} For YouTube: yt-dlp"
 $WANT_TWITTER   && echo "  ${DIM}•${NC} For Twitter/X: bird CLI (npm)"
+$WANT_TWITTER && [ -n "$XQUIK_API_KEY_VALUE" ] && echo "  ${DIM}•${NC} For Twitter/X: Xquik API fallback"
 $GEMINI_ENABLED && echo "  ${DIM}•${NC} Gemini Vision: google-genai"
 echo "  ${DIM}•${NC} Configuration: ~/.social-media-scraper.env"
 echo "  ${DIM}•${NC} Skill: ${AGENT_SKILLS_DIR:-$HOME/.agent-skills}/social-media-scraper/"
@@ -350,6 +372,9 @@ GEMINI_API_KEY=$GEMINI_API_KEY_VALUE
 # Transcription
 TRANSCRIPTION_LANG=$TRANSCRIPTION_LANG
 WHISPER_MODEL=$WHISPER_MODEL
+
+# Optional Twitter/X API fallback
+XQUIK_API_KEY=$XQUIK_API_KEY_VALUE
 EOF
 chmod 600 "$ENV_FILE"
 ok "Configuration saved (only you can read it: chmod 600)"
@@ -377,6 +402,7 @@ cat <<EOF
 
 ${BOLD}Summary${NC}
   Platforms         : $PLATFORM_LIST
+  Xquik fallback    : $([ -n "$XQUIK_API_KEY_VALUE" ] && echo "configured" || echo "not configured")
   Gemini Vision     : $([ "$GEMINI_ENABLED" = "true" ] && echo "enabled" || echo "disabled")
   Transcription     : $TRANSCRIPTION_LANG ($WHISPER_MODEL)
   Configuration     : $ENV_FILE

@@ -123,6 +123,12 @@ else
     ok "GEMINI_API_KEY is set"
 fi
 
+if [ -n "${XQUIK_API_KEY:-}" ]; then
+    ok "XQUIK_API_KEY is set for optional Twitter/X API fallback"
+else
+    info "Optional Twitter/X API fallback: set XQUIK_API_KEY if you want API-backed tweet metadata and replies"
+fi
+
 # 8) Done
 echo ""
 echo "========================================"
