@@ -91,9 +91,9 @@ else
 fi
 
 # 6) Place the skill
-# Works with any agent that loads skills from a directory. Override with
-# AGENT_SKILLS_DIR for your agent (default: Claude Code's ~/.claude/skills).
-SKILLS_ROOT="${AGENT_SKILLS_DIR:-$HOME/.claude/skills}"
+# Works with any agent that loads skills from a directory. Set AGENT_SKILLS_DIR
+# to your agent's skills directory (falls back to ~/.agent-skills).
+SKILLS_ROOT="${AGENT_SKILLS_DIR:-$HOME/.agent-skills}"
 SKILL_DIR="$SKILLS_ROOT/social-media-scraper"
 info "Placing skill: $SKILL_DIR"
 mkdir -p "$SKILL_DIR"

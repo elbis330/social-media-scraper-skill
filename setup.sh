@@ -256,7 +256,7 @@ $WANT_YOUTUBE   && echo "  ${DIM}•${NC} For YouTube: yt-dlp"
 $WANT_TWITTER   && echo "  ${DIM}•${NC} For Twitter/X: bird CLI (npm)"
 $GEMINI_ENABLED && echo "  ${DIM}•${NC} Gemini Vision: google-genai"
 echo "  ${DIM}•${NC} Configuration: ~/.social-media-scraper.env"
-echo "  ${DIM}•${NC} Skill: ${AGENT_SKILLS_DIR:-$HOME/.claude/skills}/social-media-scraper/"
+echo "  ${DIM}•${NC} Skill: ${AGENT_SKILLS_DIR:-$HOME/.agent-skills}/social-media-scraper/"
 echo ""
 
 if ! ask_yn "Shall I continue?" "y"; then
@@ -355,9 +355,9 @@ chmod 600 "$ENV_FILE"
 ok "Configuration saved (only you can read it: chmod 600)"
 
 # ── Place the skill ─────────────────────────────────────────────────
-# Works with any agent that loads skills from a directory. Override with
-# AGENT_SKILLS_DIR for your agent (default: Claude Code's ~/.claude/skills).
-SKILLS_ROOT="${AGENT_SKILLS_DIR:-$HOME/.claude/skills}"
+# Works with any agent that loads skills from a directory. Set AGENT_SKILLS_DIR
+# to your agent's skills directory (falls back to ~/.agent-skills).
+SKILLS_ROOT="${AGENT_SKILLS_DIR:-$HOME/.agent-skills}"
 SKILL_DIR="$SKILLS_ROOT/social-media-scraper"
 info "Placing skill: $SKILL_DIR"
 mkdir -p "$SKILL_DIR"

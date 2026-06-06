@@ -2,7 +2,7 @@
 
 > **Drop a single link, and your AI agent fetches everything.** Instagram reel, TikTok video, Twitter thread, YouTube video — doesn't matter. Text, comments, likes, transcription **and** analysis of what's on screen via Gemini Vision, all delivered as a single fluent summary.
 
-A portable, tool-agnostic **Agent Skill**: a single `SKILL.md` plus install scripts that work with any agentic AI coding assistant that supports the skill format — Claude Code, OpenAI Codex, OpenCode, Cline, and others.
+A portable, tool-agnostic **Agent Skill**: a single `SKILL.md` plus install scripts that work with any agentic AI coding assistant that supports the skill format.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Agent Skill](https://img.shields.io/badge/Agent-Skill-7C3AED)](#-installation)
@@ -71,7 +71,7 @@ There are three installation methods. Give the first one to someone who doesn't 
 
 ### Method 1 — Through your AI coding agent (recommended)
 
-Once the skill is installed in your agent (Claude Code, OpenAI Codex, OpenCode, Cline, …), just type:
+Once the skill is installed in your agent, just type:
 
 ```
 install the social-media-scraper skill
@@ -112,12 +112,14 @@ chmod +x install.sh
 
 #### 1. Place the Skill
 
-Copy `SKILL.md` into the directory your agent loads skills from. The default below is Claude Code's skills folder; set `AGENT_SKILLS_DIR` (used by the install scripts) or substitute your own agent's skills path as needed.
+Copy `SKILL.md` into the directory your agent loads skills from. Point `AGENT_SKILLS_DIR` at that directory (the install scripts read this variable), then copy the skill into place:
 
 ```bash
-# Default (Claude Code). Replace the path with your agent's skills directory if different.
-mkdir -p ~/.claude/skills/social-media-scraper
-cp SKILL.md ~/.claude/skills/social-media-scraper/SKILL.md
+# Set this to your agent's skills directory.
+export AGENT_SKILLS_DIR="$HOME/.agent-skills"
+
+mkdir -p "$AGENT_SKILLS_DIR/social-media-scraper"
+cp SKILL.md "$AGENT_SKILLS_DIR/social-media-scraper/SKILL.md"
 ```
 
 #### 2. Install Dependencies
@@ -212,7 +214,7 @@ Agent:  [pulls metadata + captions with yt-dlp, transcribes if absent]
 | Python | 3.10+ | yt-dlp, instaloader, faster-whisper, google-genai |
 | Node.js | 18+ | bird CLI (Twitter/X) |
 | ffmpeg | any | Video → audio conversion |
-| An agentic AI coding assistant | — | Runs the skill (Claude Code, OpenAI Codex, OpenCode, Cline, …) |
+| An agentic AI coding assistant | — | Runs the skill (any agent that supports the skill format) |
 | **Gemini API Key** | — | For visual analysis ([free](https://aistudio.google.com/apikey)) |
 
 > **Note:** All Python packages are installed system-wide with `--break-system-packages`. If you want to use a virtualenv, edit the relevant commands inside `install.sh`.
